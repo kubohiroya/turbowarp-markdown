@@ -1,52 +1,224 @@
-# TurboWarp Markdown Builder
+# TurboWarp Markdown
 
-`@kubohiroya/turbowarp-markdown` provides immutable Builder-pattern-style Markdown fragments for TurboWarp and TypeScript.
+[日本語](README.ja.md)
 
-## TurboWarp model
+A TurboWarp extension for building Markdown as immutable structured fragments and rendering it only at the output boundary.
 
-Blocks create opaque fragment handles. Fragments can be nested and chained, then rendered only at the output boundary:
+## What it does
 
-```text
-heading 1 (text "Sensor")
-  followed by paragraph (text "24 °C")
-  -> render Markdown
+- creates escaped inline text, bold, italic, links, and code spans;
+- creates headings, paragraphs, quotes, fenced code blocks, and ordered/unordered lists;
+- composes fragments functionally without mutating either input;
+- renders deterministic CommonMark-style Markdown text;
+- exports a block-free TypeScript composition API from `src/markdown.ts`.
+
+## Requirements and safety
+
+- Node.js 22 or newer;
+- pnpm through Corepack;
+- TurboWarp's unsandboxed extension option is not required.
+
+Plain text is escaped instead of treated as raw Markdown. The initial version intentionally has no raw Markdown block. Link destinations use a conservative URL policy and reject executable schemes such as `javascript:`.
+
+## Installation
+
+```bash
+corepack enable
+pnpm install --frozen-lockfile
 ```
 
-Result:
+The package is version-pinned when used from npm:
 
-```markdown
-# Sensor
-
-24 °C
+```bash
+pnpm add --save-exact @kubohiroya/turbowarp-markdown@0.1.0
 ```
 
-Ordinary text is escaped and is never interpreted as raw Markdown. The initial version intentionally has no raw-Markdown injection block.
-
-## TypeScript API
+## Quick Start
 
 ```ts
-import {append, heading, paragraph, renderMarkdown, text} from '@kubohiroya/turbowarp-markdown/core';
+import {code, concat, heading, paragraph, render, text} from '@kubohiroya/turbowarp-markdown';
 
-const document = append(
-  heading(1, text('Sensor')),
-  paragraph(text('24 °C')),
-);
-
-console.log(renderMarkdown(document));
+const document = concat(heading(1, 'Sensor'), paragraph(concat(text('temperature: '), code('21C'))));
+const responseBody = render(document);
 ```
 
-## HTTP response example
+For `turbowarp-http-server`, pass the rendered string as the response body and select `Content-Type: text/markdown; charset=utf-8`. The HTTP server does not need a package dependency on this extension.
 
-The package is intentionally independent of `turbowarp-http-server`. Render the fragment to a string and return it with:
+## Block reference
 
-```text
-Content-Type: text/markdown; charset=utf-8
+<!-- BEGIN GENERATED BLOCKS -->
+
+### `text [TEXT]`
+
+Creates escaped Markdown text.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `text` |
+| `TEXT` | String, default: `Hello *world*` |
+
+### `bold [CONTENT]`
+
+Creates bold inline Markdown content.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `bold` |
+| `CONTENT` | String, default: `important` |
+
+### `italic [CONTENT]`
+
+Creates italic inline Markdown content.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `italic` |
+| `CONTENT` | String, default: `note` |
+
+### `link [CONTENT] URL [URL]`
+
+Creates a Markdown link with a conservatively validated destination.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `link` |
+| `CONTENT` | String, default: `TurboWarp` |
+| `URL` | String, default: `https://turbowarp.org/` |
+
+### `code [TEXT]`
+
+Creates inline code content.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `code` |
+| `TEXT` | String, default: `status` |
+
+### `heading [LEVEL] [CONTENT]`
+
+Creates a heading with the level clamped to 1 through 6.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `heading` |
+| `LEVEL` | Number, default: `1` |
+| `CONTENT` | String, default: `Sensor` |
+
+### `paragraph [CONTENT]`
+
+Creates a paragraph block.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `paragraph` |
+| `CONTENT` | String, default: `ready` |
+
+### `quote [CONTENT]`
+
+Creates a block quote.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `quote` |
+| `CONTENT` | String, default: `quoted` |
+
+### `code block [TEXT] language [LANGUAGE]`
+
+Creates a fenced code block.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `codeBlock` |
+| `TEXT` | String, default: `console.log('ok')` |
+| `LANGUAGE` | String, default: `js` |
+
+### `list item [CONTENT]`
+
+Creates a list item fragment.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `listItem` |
+| `CONTENT` | String, default: `item` |
+
+### `unordered list [ITEMS]`
+
+Creates an unordered list from item fragments.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `unorderedList` |
+| `ITEMS` | String, default: `` |
+
+### `ordered list [ITEMS]`
+
+Creates an ordered list from item fragments.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `orderedList` |
+| `ITEMS` | String, default: `` |
+
+### `[LEFT] followed by [RIGHT]`
+
+Creates a new Markdown fragment sequence without mutating either input.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `concat` |
+| `LEFT` | String, default: `` |
+| `RIGHT` | String, default: `` |
+
+### `render Markdown [FRAGMENT]`
+
+Renders a Markdown fragment to final Markdown text.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `render` |
+| `FRAGMENT` | String, default: `` |
+
+<!-- END GENERATED BLOCKS -->
+
+## Important behavior
+
+Scratch reporter blocks exchange opaque `turbowarp-markdown:v1:` values while builder blocks are chained. Ordinary strings passed into content positions become escaped text fragments. The final Markdown string is produced only by `render Markdown [FRAGMENT]`.
+
+The TypeScript API exposes inline builders, block builders, list helpers, `concat`, and `render`. All builder functions return new values and do not mutate their inputs.
+
+## Development
+
+```bash
+pnpm run check
 ```
 
-## Security
+The check runs type checking, linting, tests, generated README validation, `dist/` reproducibility, repository policy validation, and an npm package dry run.
 
-Plain text and link destinations are escaped for their Markdown contexts. Raw Markdown is not supported by the ordinary builder API.
+## Release
+
+Keep `package.json` as the version source of truth. Before publishing, run:
+
+```bash
+pnpm run check
+npm pack --dry-run --ignore-scripts
+```
+
+Release artifacts include `dist/turbowarp-markdown.js`, `dist/extension-manifest.json`, `README.md`, `README.ja.md`, and `LICENSE`.
 
 ## License
 
-MPL-2.0
+SPDX-License-Identifier: MPL-2.0

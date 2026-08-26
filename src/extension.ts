@@ -1,75 +1,168 @@
+import {extensionConfig} from './config';
+import definitions from './block-definitions.json';
 import {
-  append,
   bold,
   code,
   codeBlock,
+  concat,
   heading,
   italic,
   link,
+  listItem,
+  orderedList,
   paragraph,
   quote,
-  renderMarkdown,
+  render,
   text,
-  type MarkdownFragment,
-} from './core.js';
+  unorderedList,
+  type MarkdownFragment
+} from './markdown';
 
-const PREFIX = 'md:';
+type BlockTypeName = 'REPORTER';
+type ArgumentTypeName = 'STRING' | 'NUMBER';
 
-class FragmentRegistry {
-  private nextId = 1;
-  private readonly values = new Map<string, MarkdownFragment>();
-
-  put(value: MarkdownFragment): string {
-    const id = `${PREFIX}${this.nextId++}`;
-    this.values.set(id, value);
-    return id;
-  }
-
-  get(value: unknown): MarkdownFragment {
-    const key = String(value ?? '');
-    const fragment = this.values.get(key);
-    if (fragment) return fragment;
-    return text(key);
-  }
+interface DefinitionArgument {
+  type: ArgumentTypeName;
+  defaultValue: string | number;
 }
 
-class MarkdownExtension {
-  private readonly registry = new FragmentRegistry();
+interface BlockDefinition {
+  opcode: string;
+  blockType: BlockTypeName;
+  text: string;
+  description: string;
+  arguments: Record<string, DefinitionArgument>;
+}
 
-  getInfo() {
+const SERIALIZED_PREFIX = 'turbowarp-markdown:v1:';
+const blockDefinitions = definitions.blocks as readonly BlockDefinition[];
+
+export class MarkdownExtension implements TurboWarpExtension {
+  public getInfo(): Record<string, unknown> {
     return {
-      id: 'kubohiroyamarkdown',
-      name: 'Markdown Builder',
-      docsURI: 'https://kubohiroya.github.io/turbowarp-markdown/',
-      blockIconURI: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCI+PHJlY3Qgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzU1NSIvPjx0ZXh0IHg9IjEyIiB5PSIxNiIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0id2hpdGUiPk3ihpM8L3RleHQ+PC9zdmc+',
-      blocks: [
-        {opcode: 'text', blockType: Scratch.BlockType.REPORTER, text: 'text [TEXT]', arguments: {TEXT: {type: Scratch.ArgumentType.STRING, defaultValue: 'hello'}}},
-        {opcode: 'bold', blockType: Scratch.BlockType.REPORTER, text: 'bold [CONTENT]', arguments: {CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: 'hello'}}},
-        {opcode: 'italic', blockType: Scratch.BlockType.REPORTER, text: 'italic [CONTENT]', arguments: {CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: 'hello'}}},
-        {opcode: 'link', blockType: Scratch.BlockType.REPORTER, text: 'link [CONTENT] URL [URL]', arguments: {CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: 'OpenAI'}, URL: {type: Scratch.ArgumentType.STRING, defaultValue: 'https://example.com/'}}},
-        {opcode: 'code', blockType: Scratch.BlockType.REPORTER, text: 'code [TEXT]', arguments: {TEXT: {type: Scratch.ArgumentType.STRING, defaultValue: 'value'}}},
-        {opcode: 'heading', blockType: Scratch.BlockType.REPORTER, text: 'heading [LEVEL] [CONTENT]', arguments: {LEVEL: {type: Scratch.ArgumentType.NUMBER, defaultValue: 1}, CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: 'Title'}}},
-        {opcode: 'paragraph', blockType: Scratch.BlockType.REPORTER, text: 'paragraph [CONTENT]', arguments: {CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: 'Hello'}}},
-        {opcode: 'quote', blockType: Scratch.BlockType.REPORTER, text: 'quote [CONTENT]', arguments: {CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: 'Quote'}}},
-        {opcode: 'codeBlock', blockType: Scratch.BlockType.REPORTER, text: 'code block [TEXT] language [LANGUAGE]', arguments: {TEXT: {type: Scratch.ArgumentType.STRING, defaultValue: 'console.log("hello")'}, LANGUAGE: {type: Scratch.ArgumentType.STRING, defaultValue: 'javascript'}}},
-        {opcode: 'append', blockType: Scratch.BlockType.REPORTER, text: '[A] followed by [B]', arguments: {A: {type: Scratch.ArgumentType.STRING, defaultValue: ''}, B: {type: Scratch.ArgumentType.STRING, defaultValue: ''}}},
-        {opcode: 'render', blockType: Scratch.BlockType.REPORTER, text: 'render Markdown [CONTENT]', arguments: {CONTENT: {type: Scratch.ArgumentType.STRING, defaultValue: ''}}},
-      ],
+      id: extensionConfig.id,
+      name: Scratch.translate(definitions.extensionName),
+      docsURI: extensionConfig.docsURI,
+      blockIconURI: extensionConfig.blockIconURI,
+      blocks: blockDefinitions.map((block) => this.toScratchBlock(block))
     };
   }
 
-  text(args: {TEXT: unknown}) { return this.registry.put(text(args.TEXT)); }
-  bold(args: {CONTENT: unknown}) { return this.registry.put(bold(this.registry.get(args.CONTENT))); }
-  italic(args: {CONTENT: unknown}) { return this.registry.put(italic(this.registry.get(args.CONTENT))); }
-  link(args: {CONTENT: unknown; URL: unknown}) { return this.registry.put(link(this.registry.get(args.CONTENT), args.URL)); }
-  code(args: {TEXT: unknown}) { return this.registry.put(code(args.TEXT)); }
-  heading(args: {LEVEL: unknown; CONTENT: unknown}) { return this.registry.put(heading(args.LEVEL, this.registry.get(args.CONTENT))); }
-  paragraph(args: {CONTENT: unknown}) { return this.registry.put(paragraph(this.registry.get(args.CONTENT))); }
-  quote(args: {CONTENT: unknown}) { return this.registry.put(quote(this.registry.get(args.CONTENT))); }
-  codeBlock(args: {TEXT: unknown; LANGUAGE: unknown}) { return this.registry.put(codeBlock(args.TEXT, args.LANGUAGE)); }
-  append(args: {A: unknown; B: unknown}) { return this.registry.put(append(this.registry.get(args.A), this.registry.get(args.B))); }
-  render(args: {CONTENT: unknown}) { return renderMarkdown(this.registry.get(args.CONTENT)); }
+  public text(args: {TEXT: unknown}): string {
+    return encode(text(Scratch.Cast.toString(args.TEXT)));
+  }
+
+  public bold(args: {CONTENT: unknown}): string {
+    return encode(bold(decodeOrText(args.CONTENT)));
+  }
+
+  public italic(args: {CONTENT: unknown}): string {
+    return encode(italic(decodeOrText(args.CONTENT)));
+  }
+
+  public link(args: {CONTENT: unknown; URL: unknown}): string {
+    return encode(link(decodeOrText(args.CONTENT), Scratch.Cast.toString(args.URL)));
+  }
+
+  public code(args: {TEXT: unknown}): string {
+    return encode(code(Scratch.Cast.toString(args.TEXT)));
+  }
+
+  public heading(args: {LEVEL: unknown; CONTENT: unknown}): string {
+    return encode(heading(Scratch.Cast.toNumber(args.LEVEL), decodeOrText(args.CONTENT)));
+  }
+
+  public paragraph(args: {CONTENT: unknown}): string {
+    return encode(paragraph(decodeOrText(args.CONTENT)));
+  }
+
+  public quote(args: {CONTENT: unknown}): string {
+    return encode(quote(decodeOrText(args.CONTENT)));
+  }
+
+  public codeBlock(args: {TEXT: unknown; LANGUAGE: unknown}): string {
+    return encode(codeBlock(Scratch.Cast.toString(args.TEXT), Scratch.Cast.toString(args.LANGUAGE)));
+  }
+
+  public listItem(args: {CONTENT: unknown}): string {
+    return encode(listItem(decodeOrText(args.CONTENT)));
+  }
+
+  public unorderedList(args: {ITEMS: unknown}): string {
+    return encode(unorderedList(decodeOrText(args.ITEMS)));
+  }
+
+  public orderedList(args: {ITEMS: unknown}): string {
+    return encode(orderedList(decodeOrText(args.ITEMS)));
+  }
+
+  public concat(args: {LEFT: unknown; RIGHT: unknown}): string {
+    return encode(concat(decodeOrText(args.LEFT), decodeOrText(args.RIGHT)));
+  }
+
+  public render(args: {FRAGMENT: unknown}): string {
+    return render(decodeOrText(args.FRAGMENT));
+  }
+
+  private toScratchBlock(block: BlockDefinition): Record<string, unknown> {
+    return {
+      opcode: block.opcode,
+      blockType: Scratch.BlockType[block.blockType],
+      text: Scratch.translate(block.text),
+      arguments: Object.fromEntries(
+        Object.entries(block.arguments).map(([name, argument]) => [
+          name,
+          {
+            type: Scratch.ArgumentType[argument.type],
+            defaultValue: argument.defaultValue
+          }
+        ])
+      )
+    };
+  }
 }
 
-if (!Scratch.extensions.unsandboxed) throw new Error('Markdown Builder must run unsandboxed.');
-Scratch.extensions.register(new MarkdownExtension());
+function encode(fragment: MarkdownFragment): string {
+  return `${SERIALIZED_PREFIX}${JSON.stringify(fragment)}`;
+}
+
+function decodeOrText(value: unknown): MarkdownFragment {
+  const raw = Scratch.Cast.toString(value);
+  if (!raw.startsWith(SERIALIZED_PREFIX)) return text(raw);
+  return parseFragment(raw.slice(SERIALIZED_PREFIX.length));
+}
+
+function parseFragment(json: string): MarkdownFragment {
+  const parsed = JSON.parse(json) as MarkdownFragment;
+  if (!isFragment(parsed)) throw new TypeError('Invalid serialized Markdown fragment.');
+  return parsed;
+}
+
+function isFragment(value: unknown): value is MarkdownFragment {
+  if (typeof value !== 'object' || value === null) return false;
+  const record = value as Record<string, unknown>;
+  if (record.kind === 'empty') return true;
+  if (record.kind === 'text' || record.kind === 'code') return typeof record.value === 'string';
+  if (record.kind === 'bold' || record.kind === 'italic' || record.kind === 'paragraph') {
+    return isFragment(record.content);
+  }
+  if (record.kind === 'link') {
+    return typeof record.url === 'string' && isFragment(record.content);
+  }
+  if (record.kind === 'heading') {
+    return typeof record.level === 'number' && isFragment(record.content);
+  }
+  if (record.kind === 'quote' || record.kind === 'listItem') return isFragment(record.content);
+  if (record.kind === 'codeBlock') {
+    return typeof record.language === 'string' && typeof record.value === 'string';
+  }
+  if (record.kind === 'list') {
+    return (
+      typeof record.ordered === 'boolean' &&
+      Array.isArray(record.items) &&
+      record.items.every(isFragment)
+    );
+  }
+  if (record.kind === 'sequence') return Array.isArray(record.children) && record.children.every(isFragment);
+  return false;
+}

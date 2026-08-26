@@ -1,0 +1,115 @@
+{
+  "extensionName": "TurboWarp Markdown",
+  "blocks": [
+    {
+      "opcode": "text",
+      "blockType": "REPORTER",
+      "text": "text [TEXT]",
+      "description": "Creates escaped Markdown text.",
+      "arguments": {"TEXT": {"type": "STRING", "defaultValue": "Hello *world*"}}
+    },
+    {
+      "opcode": "bold",
+      "blockType": "REPORTER",
+      "text": "bold [CONTENT]",
+      "description": "Creates bold inline Markdown content.",
+      "arguments": {"CONTENT": {"type": "STRING", "defaultValue": "important"}}
+    },
+    {
+      "opcode": "italic",
+      "blockType": "REPORTER",
+      "text": "italic [CONTENT]",
+      "description": "Creates italic inline Markdown content.",
+      "arguments": {"CONTENT": {"type": "STRING", "defaultValue": "note"}}
+    },
+    {
+      "opcode": "link",
+      "blockType": "REPORTER",
+      "text": "link [CONTENT] URL [URL]",
+      "description": "Creates a Markdown link with a conservatively validated destination.",
+      "arguments": {
+        "CONTENT": {"type": "STRING", "defaultValue": "TurboWarp"},
+        "URL": {"type": "STRING", "defaultValue": "https://turbowarp.org/"}
+      }
+    },
+    {
+      "opcode": "code",
+      "blockType": "REPORTER",
+      "text": "code [TEXT]",
+      "description": "Creates inline code content.",
+      "arguments": {"TEXT": {"type": "STRING", "defaultValue": "status"}}
+    },
+    {
+      "opcode": "heading",
+      "blockType": "REPORTER",
+      "text": "heading [LEVEL] [CONTENT]",
+      "description": "Creates a heading with the level clamped to 1 through 6.",
+      "arguments": {
+        "LEVEL": {"type": "NUMBER", "defaultValue": 1},
+        "CONTENT": {"type": "STRING", "defaultValue": "Sensor"}
+      }
+    },
+    {
+      "opcode": "paragraph",
+      "blockType": "REPORTER",
+      "text": "paragraph [CONTENT]",
+      "description": "Creates a paragraph block.",
+      "arguments": {"CONTENT": {"type": "STRING", "defaultValue": "ready"}}
+    },
+    {
+      "opcode": "quote",
+      "blockType": "REPORTER",
+      "text": "quote [CONTENT]",
+      "description": "Creates a block quote.",
+      "arguments": {"CONTENT": {"type": "STRING", "defaultValue": "quoted"}}
+    },
+    {
+      "opcode": "codeBlock",
+      "blockType": "REPORTER",
+      "text": "code block [TEXT] language [LANGUAGE]",
+      "description": "Creates a fenced code block.",
+      "arguments": {
+        "TEXT": {"type": "STRING", "defaultValue": "console.log('ok')"},
+        "LANGUAGE": {"type": "STRING", "defaultValue": "js"}
+      }
+    },
+    {
+      "opcode": "listItem",
+      "blockType": "REPORTER",
+      "text": "list item [CONTENT]",
+      "description": "Creates a list item fragment.",
+      "arguments": {"CONTENT": {"type": "STRING", "defaultValue": "item"}}
+    },
+    {
+      "opcode": "unorderedList",
+      "blockType": "REPORTER",
+      "text": "unordered list [ITEMS]",
+      "description": "Creates an unordered list from item fragments.",
+      "arguments": {"ITEMS": {"type": "STRING", "defaultValue": ""}}
+    },
+    {
+      "opcode": "orderedList",
+      "blockType": "REPORTER",
+      "text": "ordered list [ITEMS]",
+      "description": "Creates an ordered list from item fragments.",
+      "arguments": {"ITEMS": {"type": "STRING", "defaultValue": ""}}
+    },
+    {
+      "opcode": "concat",
+      "blockType": "REPORTER",
+      "text": "[LEFT] followed by [RIGHT]",
+      "description": "Creates a new Markdown fragment sequence without mutating either input.",
+      "arguments": {
+        "LEFT": {"type": "STRING", "defaultValue": ""},
+        "RIGHT": {"type": "STRING", "defaultValue": ""}
+      }
+    },
+    {
+      "opcode": "render",
+      "blockType": "REPORTER",
+      "text": "render Markdown [FRAGMENT]",
+      "description": "Renders a Markdown fragment to final Markdown text.",
+      "arguments": {"FRAGMENT": {"type": "STRING", "defaultValue": ""}}
+    }
+  ]
+}
