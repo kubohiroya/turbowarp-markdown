@@ -1,0 +1,163 @@
+{
+  "formatVersion": 1,
+  "id": "kubohiroyamarkdown",
+  "blocks": [
+    {
+      "opcode": "bold",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "code",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "TEXT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "codeBlock",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "LANGUAGE",
+          "type": "STRING"
+        },
+        {
+          "id": "TEXT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "concat",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "LEFT",
+          "type": "STRING"
+        },
+        {
+          "id": "RIGHT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "heading",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        },
+        {
+          "id": "LEVEL",
+          "type": "NUMBER"
+        }
+      ]
+    },
+    {
+      "opcode": "italic",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "link",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        },
+        {
+          "id": "URL",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "listItem",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "orderedList",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "ITEMS",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "paragraph",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "quote",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "CONTENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "render",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "FRAGMENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "text",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "TEXT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "unorderedList",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "ITEMS",
+          "type": "STRING"
+        }
+      ]
+    }
+  ],
+  "menus": []
+}
