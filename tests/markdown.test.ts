@@ -4,6 +4,7 @@ import {
   code,
   codeBlock,
   concat,
+  empty,
   heading,
   italic,
   link,
@@ -35,6 +36,12 @@ describe('Markdown builder API', () => {
     const items = concat(listItem('one'), listItem(link('two', '/two')));
     expect(render(unorderedList(items))).toBe('- one\n- [two](/two)');
     expect(render(orderedList(items))).toBe('1. one\n2. [two](/two)');
+  });
+
+  it('renders empty fragments explicitly at the output boundary', () => {
+    expect(render(empty)).toBe('');
+    expect(render(concat(empty, empty))).toBe('');
+    expect(render(unorderedList(empty))).toBe('');
   });
 
   it('renders quotes and fenced code blocks safely', () => {
