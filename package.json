@@ -1,0 +1,25 @@
+{
+  "name": "@kubohiroya/turbowarp-markdown",
+  "version": "0.1.0",
+  "description": "Immutable Markdown builder blocks for TurboWarp.",
+  "license": "MPL-2.0",
+  "type": "module",
+  "exports": {
+    ".": "./dist/core.js",
+    "./core": "./dist/core.js"
+  },
+  "files": ["dist/", "src/", "docs/", "README.md", "LICENSE"],
+  "packageManager": "pnpm@11.11.0",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm run typecheck && pnpm run test && pnpm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  }
+}
