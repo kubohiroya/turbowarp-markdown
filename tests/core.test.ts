@@ -16,7 +16,7 @@ describe('Markdown builder', () => {
 
   it('supports inline formatting and links', () => {
     const value = append(italic(text('read ')), link(code('x`y'), 'https://example.com/a b'));
-    expect(renderMarkdown(value)).toBe('*read *[`x`y``](https://example.com/a%20b)');
+    expect(renderMarkdown(value)).toBe('*read *[``x`y``](https://example.com/a%20b)');
   });
 
   it('clamps heading levels', () => {
