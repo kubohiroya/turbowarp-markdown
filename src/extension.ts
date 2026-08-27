@@ -5,7 +5,11 @@ import {
   code,
   codeBlock,
   concat,
+  formatValidationResult,
+  getLastRenderValidationErrorText,
+  getLastRenderValidationErrors,
   heading,
+  isValid,
   italic,
   link,
   listItem,
@@ -13,12 +17,14 @@ import {
   paragraph,
   quote,
   render,
+  renderWithValidation,
   text,
   unorderedList,
+  validate,
   type MarkdownFragment
 } from './markdown';
 
-type BlockTypeName = 'REPORTER';
+type BlockTypeName = 'REPORTER' | 'BOOLEAN';
 type ArgumentTypeName = 'STRING' | 'NUMBER';
 
 interface DefinitionArgument {
@@ -102,6 +108,26 @@ export class MarkdownExtension implements TurboWarpExtension {
 
   public render(args: {FRAGMENT: unknown}): string {
     return render(decodeOrText(args.FRAGMENT));
+  }
+
+  public renderWithValidation(args: {FRAGMENT: unknown}): string {
+    return renderWithValidation(decodeOrText(args.FRAGMENT));
+  }
+
+  public lastValidationErrors(): string {
+    return getLastRenderValidationErrorText();
+  }
+
+  public lastRenderHasValidationErrors(): boolean {
+    return getLastRenderValidationErrors().length > 0;
+  }
+
+  public validateMarkdown(args: {FRAGMENT: unknown}): string {
+    return formatValidationResult(validate(decodeOrText(args.FRAGMENT)));
+  }
+
+  public isValidMarkdown(args: {FRAGMENT: unknown}): boolean {
+    return isValid(decodeOrText(args.FRAGMENT));
   }
 
   private toScratchBlock(block: BlockDefinition): Record<string, unknown> {

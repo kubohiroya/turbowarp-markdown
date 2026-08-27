@@ -75,9 +75,23 @@ export interface MarkdownEmpty {
   readonly kind: 'empty';
 }
 
+export type MarkdownValidationSeverity = 'error' | 'warning';
+
+export interface MarkdownValidationIssue {
+  readonly severity: MarkdownValidationSeverity;
+  readonly path: string;
+  readonly message: string;
+}
+
+export interface MarkdownValidationResult {
+  readonly valid: boolean;
+  readonly issues: readonly MarkdownValidationIssue[];
+}
+
 export const empty: MarkdownEmpty = {kind: 'empty'};
 
 const SAFE_URL_PATTERN = /^(?:https?:|mailto:|tel:|\/|\.\/|\.\.\/|#|\?|$)/iu;
+let lastRenderValidationResult: MarkdownValidationResult = {valid: true, issues: []};
 
 export function text(value: string): MarkdownText {
   return {kind: 'text', value};
@@ -141,8 +155,129 @@ export function render(fragment: MarkdownFragment): string {
   return renderDocument(fragment);
 }
 
+export function renderWithValidation(fragment: MarkdownFragment): string {
+  lastRenderValidationResult = validate(fragment);
+  return renderDocument(fragment);
+}
+
+export function validate(fragment: MarkdownFragment): MarkdownValidationResult {
+  const issues: MarkdownValidationIssue[] = [];
+  validateFragment(fragment, '$', [], issues);
+  if (fragment.kind === 'empty') {
+    issues.push({severity: 'warning', path: '$', message: 'Markdown fragment is empty.'});
+  }
+  return {
+    valid: issues.every((issue) => issue.severity !== 'error'),
+    issues
+  };
+}
+
+export function isValid(fragment: MarkdownFragment): boolean {
+  return validate(fragment).valid;
+}
+
+export function getLastRenderValidationResult(): MarkdownValidationResult {
+  return lastRenderValidationResult;
+}
+
+export function getLastRenderValidationErrors(): readonly MarkdownValidationIssue[] {
+  return lastRenderValidationResult.issues.filter((issue) => issue.severity === 'error');
+}
+
+export function formatValidationResult(result: MarkdownValidationResult): string {
+  if (result.issues.length === 0) return 'valid';
+  return result.issues
+    .map((issue) => `${issue.severity}: ${issue.path}: ${issue.message}`)
+    .join('\n');
+}
+
+export function formatValidationErrors(issues: readonly MarkdownValidationIssue[]): string {
+  if (issues.length === 0) return '';
+  return issues.map((issue) => `${issue.path}: ${issue.message}`).join('\n');
+}
+
+export function getLastRenderValidationErrorText(): string {
+  return formatValidationErrors(getLastRenderValidationErrors());
+}
+
 export function normalizeContent(content: MarkdownFragment | string): MarkdownFragment {
   return typeof content === 'string' ? text(content) : content;
+}
+
+function validateFragment(
+  fragment: MarkdownFragment,
+  path: string,
+  ancestors: readonly MarkdownFragment[],
+  issues: MarkdownValidationIssue[]
+): void {
+  const parent = ancestors[ancestors.length - 1];
+  const inlineAncestor = ancestors.find((ancestor) => ['bold', 'italic', 'link'].includes(ancestor.kind));
+
+  if (!isInline(fragment) && inlineAncestor !== undefined) {
+    issues.push({
+      severity: 'error',
+      path,
+      message: `${fragment.kind} cannot be nested inside ${inlineAncestor.kind}.`
+    });
+  }
+
+  if (fragment.kind === 'listItem' && parent?.kind !== 'list') {
+    issues.push({severity: 'error', path, message: 'listItem must be inside a list.'});
+  }
+
+  validateWarnings(fragment, path, issues);
+
+  for (const [index, child] of childFragments(fragment).entries()) {
+    validateFragment(child, `${path}.children[${index}]`, [...ancestors, fragment], issues);
+  }
+}
+
+function validateWarnings(
+  fragment: MarkdownFragment,
+  path: string,
+  issues: MarkdownValidationIssue[]
+): void {
+  if (fragment.kind === 'heading' && isEmptyish(fragment.content)) {
+    issues.push({severity: 'warning', path, message: 'heading should have content.'});
+  }
+  if (fragment.kind === 'paragraph' && isEmptyish(fragment.content)) {
+    issues.push({severity: 'warning', path, message: 'paragraph is empty.'});
+  }
+  if (fragment.kind === 'link' && isEmptyish(fragment.content)) {
+    issues.push({severity: 'warning', path, message: 'link should have visible content.'});
+  }
+  if (fragment.kind === 'link' && fragment.url.trim().length === 0) {
+    issues.push({severity: 'warning', path, message: 'link should have a destination URL.'});
+  }
+  if (fragment.kind === 'list' && fragment.items.length === 0) {
+    issues.push({severity: 'warning', path, message: 'list should contain at least one item.'});
+  }
+}
+
+function childFragments(fragment: MarkdownFragment): readonly MarkdownFragment[] {
+  switch (fragment.kind) {
+    case 'bold':
+    case 'italic':
+    case 'link':
+    case 'heading':
+    case 'paragraph':
+    case 'quote':
+    case 'listItem':
+      return [fragment.content];
+    case 'list':
+      return fragment.items;
+    case 'sequence':
+      return fragment.children;
+    default:
+      return [];
+  }
+}
+
+function isEmptyish(fragment: MarkdownFragment): boolean {
+  if (fragment.kind === 'empty') return true;
+  if (fragment.kind === 'text' || fragment.kind === 'code') return fragment.value.length === 0;
+  if (fragment.kind === 'sequence') return fragment.children.every(isEmptyish);
+  return false;
 }
 
 function renderDocument(fragment: MarkdownFragment): string {

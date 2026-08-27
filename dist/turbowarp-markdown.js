@@ -13,13 +13,14 @@
     blockIconURI: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3QgeD0iNiIgeT0iOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzJGNjM4NiIvPjxwYXRoIGQ9Ik0xMyAzMFYxOGw1IDcgNS03djEyTTMwIDE4djEyTTI2IDMwaDgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4="
   };
   const extensionName = "TurboWarp Markdown";
-  const blocks = [{ "opcode": "text", "blockType": "REPORTER", "text": "text [TEXT]", "description": "Creates escaped Markdown text.", "arguments": { "TEXT": { "type": "STRING", "defaultValue": "Hello *world*" } } }, { "opcode": "bold", "blockType": "REPORTER", "text": "bold [CONTENT]", "description": "Creates bold inline Markdown content.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "important" } } }, { "opcode": "italic", "blockType": "REPORTER", "text": "italic [CONTENT]", "description": "Creates italic inline Markdown content.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "note" } } }, { "opcode": "link", "blockType": "REPORTER", "text": "link [CONTENT] URL [URL]", "description": "Creates a Markdown link with a conservatively validated destination.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "TurboWarp" }, "URL": { "type": "STRING", "defaultValue": "https://turbowarp.org/" } } }, { "opcode": "code", "blockType": "REPORTER", "text": "code [TEXT]", "description": "Creates inline code content.", "arguments": { "TEXT": { "type": "STRING", "defaultValue": "status" } } }, { "opcode": "heading", "blockType": "REPORTER", "text": "heading [LEVEL] [CONTENT]", "description": "Creates a heading with the level clamped to 1 through 6.", "arguments": { "LEVEL": { "type": "NUMBER", "defaultValue": 1 }, "CONTENT": { "type": "STRING", "defaultValue": "Sensor" } } }, { "opcode": "paragraph", "blockType": "REPORTER", "text": "paragraph [CONTENT]", "description": "Creates a paragraph block.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "ready" } } }, { "opcode": "quote", "blockType": "REPORTER", "text": "quote [CONTENT]", "description": "Creates a block quote.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "quoted" } } }, { "opcode": "codeBlock", "blockType": "REPORTER", "text": "code block [TEXT] language [LANGUAGE]", "description": "Creates a fenced code block.", "arguments": { "TEXT": { "type": "STRING", "defaultValue": "console.log('ok')" }, "LANGUAGE": { "type": "STRING", "defaultValue": "js" } } }, { "opcode": "listItem", "blockType": "REPORTER", "text": "list item [CONTENT]", "description": "Creates a list item fragment.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "item" } } }, { "opcode": "unorderedList", "blockType": "REPORTER", "text": "unordered list [ITEMS]", "description": "Creates an unordered list from item fragments.", "arguments": { "ITEMS": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "orderedList", "blockType": "REPORTER", "text": "ordered list [ITEMS]", "description": "Creates an ordered list from item fragments.", "arguments": { "ITEMS": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "concat", "blockType": "REPORTER", "text": "[LEFT] followed by [RIGHT]", "description": "Creates a new Markdown fragment sequence without mutating either input.", "arguments": { "LEFT": { "type": "STRING", "defaultValue": "" }, "RIGHT": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "render", "blockType": "REPORTER", "text": "render Markdown [FRAGMENT]", "description": "Renders a Markdown fragment to final Markdown text.", "arguments": { "FRAGMENT": { "type": "STRING", "defaultValue": "" } } }];
+  const blocks = [{ "opcode": "text", "blockType": "REPORTER", "text": "text [TEXT]", "description": "Creates escaped Markdown text.", "arguments": { "TEXT": { "type": "STRING", "defaultValue": "Hello *world*" } } }, { "opcode": "bold", "blockType": "REPORTER", "text": "bold [CONTENT]", "description": "Creates bold inline Markdown content.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "important" } } }, { "opcode": "italic", "blockType": "REPORTER", "text": "italic [CONTENT]", "description": "Creates italic inline Markdown content.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "note" } } }, { "opcode": "link", "blockType": "REPORTER", "text": "link [CONTENT] URL [URL]", "description": "Creates a Markdown link with a conservatively validated destination.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "TurboWarp" }, "URL": { "type": "STRING", "defaultValue": "https://turbowarp.org/" } } }, { "opcode": "code", "blockType": "REPORTER", "text": "code [TEXT]", "description": "Creates inline code content.", "arguments": { "TEXT": { "type": "STRING", "defaultValue": "status" } } }, { "opcode": "heading", "blockType": "REPORTER", "text": "heading [LEVEL] [CONTENT]", "description": "Creates a heading with the level clamped to 1 through 6.", "arguments": { "LEVEL": { "type": "NUMBER", "defaultValue": 1 }, "CONTENT": { "type": "STRING", "defaultValue": "Sensor" } } }, { "opcode": "paragraph", "blockType": "REPORTER", "text": "paragraph [CONTENT]", "description": "Creates a paragraph block.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "ready" } } }, { "opcode": "quote", "blockType": "REPORTER", "text": "quote [CONTENT]", "description": "Creates a block quote.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "quoted" } } }, { "opcode": "codeBlock", "blockType": "REPORTER", "text": "code block [TEXT] language [LANGUAGE]", "description": "Creates a fenced code block.", "arguments": { "TEXT": { "type": "STRING", "defaultValue": "console.log('ok')" }, "LANGUAGE": { "type": "STRING", "defaultValue": "js" } } }, { "opcode": "listItem", "blockType": "REPORTER", "text": "list item [CONTENT]", "description": "Creates a list item fragment.", "arguments": { "CONTENT": { "type": "STRING", "defaultValue": "item" } } }, { "opcode": "unorderedList", "blockType": "REPORTER", "text": "unordered list [ITEMS]", "description": "Creates an unordered list from item fragments.", "arguments": { "ITEMS": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "orderedList", "blockType": "REPORTER", "text": "ordered list [ITEMS]", "description": "Creates an ordered list from item fragments.", "arguments": { "ITEMS": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "concat", "blockType": "REPORTER", "text": "[LEFT] followed by [RIGHT]", "description": "Creates a new Markdown fragment sequence without mutating either input.", "arguments": { "LEFT": { "type": "STRING", "defaultValue": "" }, "RIGHT": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "render", "blockType": "REPORTER", "text": "render Markdown [FRAGMENT]", "description": "Renders a Markdown fragment to final Markdown text without updating stored validation errors.", "arguments": { "FRAGMENT": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "renderWithValidation", "blockType": "REPORTER", "text": "render Markdown with validation [FRAGMENT]", "description": "Validates a Markdown fragment, stores any validation errors, and renders final Markdown text.", "arguments": { "FRAGMENT": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "lastValidationErrors", "blockType": "REPORTER", "text": "last Markdown validation errors", "description": "Returns validation errors stored by the most recent render Markdown with validation block.", "arguments": {} }, { "opcode": "lastRenderHasValidationErrors", "blockType": "BOOLEAN", "text": "last rendered Markdown has validation errors?", "description": "Reports whether the most recent validated Markdown render stored validation errors.", "arguments": {} }, { "opcode": "validateMarkdown", "blockType": "REPORTER", "text": "validate Markdown [FRAGMENT]", "description": "Returns simple validation diagnostics for a Markdown fragment.", "arguments": { "FRAGMENT": { "type": "STRING", "defaultValue": "" } } }, { "opcode": "isValidMarkdown", "blockType": "BOOLEAN", "text": "Markdown [FRAGMENT] is valid?", "description": "Reports whether simple validation found no Markdown errors.", "arguments": { "FRAGMENT": { "type": "STRING", "defaultValue": "" } } }];
   const definitions = {
     extensionName,
     blocks
   };
   const empty = { kind: "empty" };
   const SAFE_URL_PATTERN = /^(?:https?:|mailto:|tel:|\/|\.\/|\.\.\/|#|\?|$)/iu;
+  let lastRenderValidationResult = { issues: [] };
   function text(value) {
     return { kind: "text", value };
   }
@@ -68,8 +69,99 @@
   function render(fragment) {
     return renderDocument(fragment);
   }
+  function renderWithValidation(fragment) {
+    lastRenderValidationResult = validate(fragment);
+    return renderDocument(fragment);
+  }
+  function validate(fragment) {
+    const issues = [];
+    validateFragment(fragment, "$", [], issues);
+    if (fragment.kind === "empty") {
+      issues.push({ severity: "warning", path: "$", message: "Markdown fragment is empty." });
+    }
+    return {
+      valid: issues.every((issue) => issue.severity !== "error"),
+      issues
+    };
+  }
+  function isValid(fragment) {
+    return validate(fragment).valid;
+  }
+  function getLastRenderValidationErrors() {
+    return lastRenderValidationResult.issues.filter((issue) => issue.severity === "error");
+  }
+  function formatValidationResult(result) {
+    if (result.issues.length === 0) return "valid";
+    return result.issues.map((issue) => `${issue.severity}: ${issue.path}: ${issue.message}`).join("\n");
+  }
+  function formatValidationErrors(issues) {
+    if (issues.length === 0) return "";
+    return issues.map((issue) => `${issue.path}: ${issue.message}`).join("\n");
+  }
+  function getLastRenderValidationErrorText() {
+    return formatValidationErrors(getLastRenderValidationErrors());
+  }
   function normalizeContent(content) {
     return typeof content === "string" ? text(content) : content;
+  }
+  function validateFragment(fragment, path, ancestors, issues) {
+    const parent = ancestors[ancestors.length - 1];
+    const inlineAncestor = ancestors.find((ancestor) => ["bold", "italic", "link"].includes(ancestor.kind));
+    if (!isInline(fragment) && inlineAncestor !== void 0) {
+      issues.push({
+        severity: "error",
+        path,
+        message: `${fragment.kind} cannot be nested inside ${inlineAncestor.kind}.`
+      });
+    }
+    if (fragment.kind === "listItem" && parent?.kind !== "list") {
+      issues.push({ severity: "error", path, message: "listItem must be inside a list." });
+    }
+    validateWarnings(fragment, path, issues);
+    for (const [index, child] of childFragments(fragment).entries()) {
+      validateFragment(child, `${path}.children[${index}]`, [...ancestors, fragment], issues);
+    }
+  }
+  function validateWarnings(fragment, path, issues) {
+    if (fragment.kind === "heading" && isEmptyish(fragment.content)) {
+      issues.push({ severity: "warning", path, message: "heading should have content." });
+    }
+    if (fragment.kind === "paragraph" && isEmptyish(fragment.content)) {
+      issues.push({ severity: "warning", path, message: "paragraph is empty." });
+    }
+    if (fragment.kind === "link" && isEmptyish(fragment.content)) {
+      issues.push({ severity: "warning", path, message: "link should have visible content." });
+    }
+    if (fragment.kind === "link" && fragment.url.trim().length === 0) {
+      issues.push({ severity: "warning", path, message: "link should have a destination URL." });
+    }
+    if (fragment.kind === "list" && fragment.items.length === 0) {
+      issues.push({ severity: "warning", path, message: "list should contain at least one item." });
+    }
+  }
+  function childFragments(fragment) {
+    switch (fragment.kind) {
+      case "bold":
+      case "italic":
+      case "link":
+      case "heading":
+      case "paragraph":
+      case "quote":
+      case "listItem":
+        return [fragment.content];
+      case "list":
+        return fragment.items;
+      case "sequence":
+        return fragment.children;
+      default:
+        return [];
+    }
+  }
+  function isEmptyish(fragment) {
+    if (fragment.kind === "empty") return true;
+    if (fragment.kind === "text" || fragment.kind === "code") return fragment.value.length === 0;
+    if (fragment.kind === "sequence") return fragment.children.every(isEmptyish);
+    return false;
   }
   function renderDocument(fragment) {
     if (fragment.kind === "empty") return "";
@@ -231,6 +323,21 @@
     }
     render(args) {
       return render(decodeOrText(args.FRAGMENT));
+    }
+    renderWithValidation(args) {
+      return renderWithValidation(decodeOrText(args.FRAGMENT));
+    }
+    lastValidationErrors() {
+      return getLastRenderValidationErrorText();
+    }
+    lastRenderHasValidationErrors() {
+      return getLastRenderValidationErrors().length > 0;
+    }
+    validateMarkdown(args) {
+      return formatValidationResult(validate(decodeOrText(args.FRAGMENT)));
+    }
+    isValidMarkdown(args) {
+      return isValid(decodeOrText(args.FRAGMENT));
     }
     toScratchBlock(block) {
       return {

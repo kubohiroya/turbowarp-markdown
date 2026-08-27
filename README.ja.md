@@ -10,6 +10,7 @@ TurboWarp 上で Markdown を immutable な構造化フラグメントとして�
 - heading、paragraph、quote、fenced code block、ordered/unordered list を作れます。
 - 合成は入力を変更せず、新しいフラグメントを返します。
 - CommonMark 寄りの Markdown を決定的にレンダリングします。
+- validation なしの Markdown 化と、validation して直近 error を保持する Markdown 化を選べます。
 - ブロックなしで使える TypeScript composition API も `src/markdown.ts` から提供します。
 
 ## HTTP Server 連携
