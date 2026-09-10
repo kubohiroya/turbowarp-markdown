@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-markdown",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "An immutable Markdown builder extension for TurboWarp.",
   "author": "Hiroya Kubo <hiroya@cuc.ac.jp>",
   "license": "MPL-2.0",
