@@ -65,6 +65,16 @@
       ]
     },
     {
+      "opcode": "isValidMarkdown",
+      "blockType": "BOOLEAN",
+      "arguments": [
+        {
+          "id": "FRAGMENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
       "opcode": "italic",
       "blockType": "REPORTER",
       "arguments": [
@@ -73,6 +83,16 @@
           "type": "STRING"
         }
       ]
+    },
+    {
+      "opcode": "lastRenderHasValidationErrors",
+      "blockType": "BOOLEAN",
+      "arguments": []
+    },
+    {
+      "opcode": "lastValidationErrors",
+      "blockType": "REPORTER",
+      "arguments": []
     },
     {
       "opcode": "link",
@@ -139,6 +159,16 @@
       ]
     },
     {
+      "opcode": "renderWithValidation",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "FRAGMENT",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
       "opcode": "text",
       "blockType": "REPORTER",
       "arguments": [
@@ -154,6 +184,16 @@
       "arguments": [
         {
           "id": "ITEMS",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "opcode": "validateMarkdown",
+      "blockType": "REPORTER",
+      "arguments": [
+        {
+          "id": "FRAGMENT",
           "type": "STRING"
         }
       ]

@@ -5,16 +5,23 @@ import {
   codeBlock,
   concat,
   empty,
+  formatValidationResult,
+  getLastRenderValidationErrorText,
+  getLastRenderValidationErrors,
+  getLastRenderValidationResult,
   heading,
   italic,
+  isValid,
   link,
   listItem,
   orderedList,
   paragraph,
   quote,
   render,
+  renderWithValidation,
   text,
-  unorderedList
+  unorderedList,
+  validate
 } from '../src/markdown.js';
 
 describe('Markdown builder API', () => {
@@ -54,5 +61,49 @@ describe('Markdown builder API', () => {
   it('clamps heading levels and rejects executable URLs', () => {
     expect(render(heading(9, 'deep'))).toBe('###### deep');
     expect(() => link('bad', 'javascript:alert(1)')).toThrow('Unsafe URL value');
+  });
+
+  it('validates common successful structures', () => {
+    const document = concat(heading(1, 'Sensor'), paragraph('ready'));
+    expect(validate(document)).toEqual({valid: true, issues: []});
+    expect(isValid(unorderedList(concat(listItem('one'), listItem('two'))))).toBe(true);
+  });
+
+  it('reports validation errors for structural mistakes', () => {
+    const result = validate(concat(listItem('orphan'), bold(paragraph('block in inline'))));
+    expect(result.valid).toBe(false);
+    expect(result.issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          severity: 'error',
+          message: 'listItem must be inside a list.'
+        }),
+        expect.objectContaining({
+          severity: 'error',
+          message: 'paragraph cannot be nested inside bold.'
+        })
+      ])
+    );
+  });
+
+  it('keeps warning-only validation results valid', () => {
+    const result = validate(unorderedList(empty));
+    expect(result.valid).toBe(true);
+    expect(formatValidationResult(result)).toContain('warning: $: list should contain at least one item.');
+  });
+
+  it('stores validation errors only for validated renders', () => {
+    renderWithValidation(unorderedList(empty));
+    expect(getLastRenderValidationResult().valid).toBe(true);
+    expect(getLastRenderValidationErrors()).toEqual([]);
+    expect(getLastRenderValidationErrorText()).toBe('');
+
+    render(listItem('orphan'));
+    expect(getLastRenderValidationResult().valid).toBe(true);
+    expect(getLastRenderValidationErrors()).toEqual([]);
+
+    renderWithValidation(listItem('orphan'));
+    expect(getLastRenderValidationResult().valid).toBe(false);
+    expect(getLastRenderValidationErrorText()).toBe('$: listItem must be inside a list.');
   });
 });

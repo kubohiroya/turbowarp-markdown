@@ -108,7 +108,42 @@
       "opcode": "render",
       "blockType": "REPORTER",
       "text": "render Markdown [FRAGMENT]",
-      "description": "Renders a Markdown fragment to final Markdown text.",
+      "description": "Renders a Markdown fragment to final Markdown text without updating stored validation errors.",
+      "arguments": {"FRAGMENT": {"type": "STRING", "defaultValue": ""}}
+    },
+    {
+      "opcode": "renderWithValidation",
+      "blockType": "REPORTER",
+      "text": "render Markdown with validation [FRAGMENT]",
+      "description": "Validates a Markdown fragment, stores any validation errors, and renders final Markdown text.",
+      "arguments": {"FRAGMENT": {"type": "STRING", "defaultValue": ""}}
+    },
+    {
+      "opcode": "lastValidationErrors",
+      "blockType": "REPORTER",
+      "text": "last Markdown validation errors",
+      "description": "Returns validation errors stored by the most recent render Markdown with validation block.",
+      "arguments": {}
+    },
+    {
+      "opcode": "lastRenderHasValidationErrors",
+      "blockType": "BOOLEAN",
+      "text": "last rendered Markdown has validation errors?",
+      "description": "Reports whether the most recent validated Markdown render stored validation errors.",
+      "arguments": {}
+    },
+    {
+      "opcode": "validateMarkdown",
+      "blockType": "REPORTER",
+      "text": "validate Markdown [FRAGMENT]",
+      "description": "Returns simple validation diagnostics for a Markdown fragment.",
+      "arguments": {"FRAGMENT": {"type": "STRING", "defaultValue": ""}}
+    },
+    {
+      "opcode": "isValidMarkdown",
+      "blockType": "BOOLEAN",
+      "text": "Markdown [FRAGMENT] is valid?",
+      "description": "Reports whether simple validation found no Markdown errors.",
       "arguments": {"FRAGMENT": {"type": "STRING", "defaultValue": ""}}
     }
   ]

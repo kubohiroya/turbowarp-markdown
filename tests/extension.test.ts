@@ -3,7 +3,7 @@ import {MarkdownExtension} from '../src/extension.js';
 
 beforeEach(() => {
   vi.stubGlobal('Scratch', {
-    BlockType: {REPORTER: 'reporter'},
+    BlockType: {REPORTER: 'reporter', BOOLEAN: 'boolean'},
     ArgumentType: {STRING: 'string', NUMBER: 'number'},
     Cast: {
       toString: (value: unknown) => String(value),
@@ -35,6 +35,9 @@ describe('MarkdownExtension', () => {
     };
     expect(info.name).toBe('TurboWarp Markdown');
     expect(info.blocks.map((block) => block.opcode)).toContain('render');
+    expect(info.blocks.map((block) => block.opcode)).toContain('renderWithValidation');
+    expect(info.blocks.map((block) => block.opcode)).toContain('validateMarkdown');
+    expect(info.blocks.map((block) => block.opcode)).toContain('isValidMarkdown');
     expect(info.blocks.map((block) => block.opcode)).not.toContain('rawMarkdown');
   });
 
@@ -61,5 +64,25 @@ describe('MarkdownExtension', () => {
     expect(extension.render({FRAGMENT: extension.unorderedList({ITEMS: items})})).toBe(
       '- one\n- two'
     );
+  });
+
+  it('stores validation errors only from the validation render Markdown call', () => {
+    const extension = new MarkdownExtension();
+    expect(extension.lastRenderHasValidationErrors()).toBe(false);
+    expect(extension.lastValidationErrors()).toBe('');
+
+    const orphan = extension.listItem({CONTENT: 'orphan'});
+    expect(extension.isValidMarkdown({FRAGMENT: orphan})).toBe(false);
+    expect(extension.validateMarkdown({FRAGMENT: orphan})).toContain(
+      'error: $: listItem must be inside a list.'
+    );
+
+    extension.render({FRAGMENT: orphan});
+    expect(extension.lastRenderHasValidationErrors()).toBe(false);
+    expect(extension.lastValidationErrors()).toBe('');
+
+    extension.renderWithValidation({FRAGMENT: orphan});
+    expect(extension.lastRenderHasValidationErrors()).toBe(true);
+    expect(extension.lastValidationErrors()).toBe('$: listItem must be inside a list.');
   });
 });

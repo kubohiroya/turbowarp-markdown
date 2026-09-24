@@ -10,6 +10,7 @@ A TurboWarp extension for building Markdown as immutable structured fragments an
 - creates headings, paragraphs, quotes, fenced code blocks, and ordered/unordered lists;
 - composes fragments functionally without mutating either input;
 - renders deterministic CommonMark-style Markdown text;
+- offers separate Markdown render blocks with and without validation;
 - exports a block-free TypeScript composition API from `src/markdown.ts`.
 
 ## Requirements and safety
@@ -30,7 +31,7 @@ pnpm install --frozen-lockfile
 The package is version-pinned when used from npm:
 
 ```bash
-pnpm add --save-exact @kubohiroya/turbowarp-markdown@0.1.0
+pnpm add --save-exact @kubohiroya/turbowarp-markdown@0.2.0
 ```
 
 ## Quick Start
@@ -184,12 +185,60 @@ Creates a new Markdown fragment sequence without mutating either input.
 
 ### `render Markdown [FRAGMENT]`
 
-Renders a Markdown fragment to final Markdown text.
+Renders a Markdown fragment to final Markdown text without updating stored validation errors.
 
 | Property | Value |
 |---|---|
 | Type | Reporter |
 | Opcode | `render` |
+| `FRAGMENT` | String, default: `` |
+
+### `render Markdown with validation [FRAGMENT]`
+
+Validates a Markdown fragment, stores any validation errors, and renders final Markdown text.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `renderWithValidation` |
+| `FRAGMENT` | String, default: `` |
+
+### `last Markdown validation errors`
+
+Returns validation errors stored by the most recent render Markdown with validation block.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `lastValidationErrors` |
+
+### `last rendered Markdown has validation errors?`
+
+Reports whether the most recent validated Markdown render stored validation errors.
+
+| Property | Value |
+|---|---|
+| Type | Boolean |
+| Opcode | `lastRenderHasValidationErrors` |
+
+### `validate Markdown [FRAGMENT]`
+
+Returns simple validation diagnostics for a Markdown fragment.
+
+| Property | Value |
+|---|---|
+| Type | Reporter |
+| Opcode | `validateMarkdown` |
+| `FRAGMENT` | String, default: `` |
+
+### `Markdown [FRAGMENT] is valid?`
+
+Reports whether simple validation found no Markdown errors.
+
+| Property | Value |
+|---|---|
+| Type | Boolean |
+| Opcode | `isValidMarkdown` |
 | `FRAGMENT` | String, default: `` |
 
 <!-- END GENERATED BLOCKS -->
@@ -198,7 +247,11 @@ Renders a Markdown fragment to final Markdown text.
 
 Scratch reporter blocks exchange opaque `turbowarp-markdown:v1:` values while builder blocks are chained. Ordinary strings passed into content positions become escaped text fragments. The final Markdown string is produced only by `render Markdown [FRAGMENT]`.
 
-The TypeScript API exposes inline builders, block builders, list helpers, `concat`, and `render`. All builder functions return new values and do not mutate their inputs.
+The TypeScript API exposes inline builders, block builders, list helpers, `concat`, `render`, `renderWithValidation`, and `validate`. All builder functions return new values and do not mutate their inputs.
+
+Use `render Markdown [FRAGMENT]` when validation is not needed. Use `render Markdown with validation [FRAGMENT]` when the final Builder-pattern output should also run validation and store validation errors from that render. Other extensions can read those errors with `last Markdown validation errors` or check `last rendered Markdown has validation errors?` after rendering. This lets an HTTP extension choose to return an explanatory error response and log the same diagnostics.
+
+Validation is intentionally lightweight. It catches common mistakes such as a `list item` used outside a list and block fragments nested inside inline-only fragments. It also warns about empty documents, empty lists, empty headings, and links without visible content or destinations.
 
 ## Development
 
