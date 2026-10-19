@@ -1,3 +1,4 @@
+import {fixedInputRegistration} from './fixed-input-editors.js';
 import {extensionConfig} from './config';
 import definitions from './block-definitions.json';
 import {
@@ -44,7 +45,12 @@ const SERIALIZED_PREFIX = 'turbowarp-markdown:v1:';
 const blockDefinitions = definitions.blocks as readonly BlockDefinition[];
 
 export class MarkdownExtension implements TurboWarpExtension {
+  private readonly fixedInputs = fixedInputRegistration(typeof Scratch === 'undefined' ? undefined : Scratch);
+
+  public dispose(): void {this.fixedInputs.dispose();}
+
   public getInfo(): Record<string, unknown> {
+    this.fixedInputs.ensure(blockDefinitions.map(block => `${extensionConfig.id}_${block.opcode}`));
     return {
       id: extensionConfig.id,
       name: Scratch.translate(definitions.extensionName),

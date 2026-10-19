@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kubohiroya.github.io/turbowarp-markdown/schemas/block-editor-fixed-inputs.schema.json",
+  "$defs": {
+    "heading": {
+      "type": "object",
+      "properties": {
+        "LEVEL": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "LEVEL"
+      ],
+      "additionalProperties": true
+    }
+  }
+}

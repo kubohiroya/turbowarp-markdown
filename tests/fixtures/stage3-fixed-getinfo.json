@@ -1,0 +1,229 @@
+[
+  {
+    "id": "native-default",
+    "values": {},
+    "getInfo": {
+      "id": "kubohiroyamarkdown",
+      "name": "TurboWarp Markdown",
+      "docsURI": "https://kubohiroya.github.io/turbowarp-markdown/",
+      "blockIconURI": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3QgeD0iNiIgeT0iOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzJGNjM4NiIvPjxwYXRoIGQ9Ik0xMyAzMFYxOGw1IDcgNS03djEyTTMwIDE4djEyTTI2IDMwaDgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=",
+      "blocks": [
+        {
+          "opcode": "text",
+          "blockType": "reporter",
+          "text": "text [TEXT]",
+          "arguments": {
+            "TEXT": {
+              "type": "string",
+              "defaultValue": "Hello *world*"
+            }
+          }
+        },
+        {
+          "opcode": "bold",
+          "blockType": "reporter",
+          "text": "bold [CONTENT]",
+          "arguments": {
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "important"
+            }
+          }
+        },
+        {
+          "opcode": "italic",
+          "blockType": "reporter",
+          "text": "italic [CONTENT]",
+          "arguments": {
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "note"
+            }
+          }
+        },
+        {
+          "opcode": "link",
+          "blockType": "reporter",
+          "text": "link [CONTENT] URL [URL]",
+          "arguments": {
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "TurboWarp"
+            },
+            "URL": {
+              "type": "string",
+              "defaultValue": "https://turbowarp.org/"
+            }
+          }
+        },
+        {
+          "opcode": "code",
+          "blockType": "reporter",
+          "text": "code [TEXT]",
+          "arguments": {
+            "TEXT": {
+              "type": "string",
+              "defaultValue": "status"
+            }
+          }
+        },
+        {
+          "opcode": "heading",
+          "blockType": "reporter",
+          "text": "heading [LEVEL] [CONTENT]",
+          "arguments": {
+            "LEVEL": {
+              "type": "number",
+              "defaultValue": 1
+            },
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "Sensor"
+            }
+          }
+        },
+        {
+          "opcode": "paragraph",
+          "blockType": "reporter",
+          "text": "paragraph [CONTENT]",
+          "arguments": {
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "ready"
+            }
+          }
+        },
+        {
+          "opcode": "quote",
+          "blockType": "reporter",
+          "text": "quote [CONTENT]",
+          "arguments": {
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "quoted"
+            }
+          }
+        },
+        {
+          "opcode": "codeBlock",
+          "blockType": "reporter",
+          "text": "code block [TEXT] language [LANGUAGE]",
+          "arguments": {
+            "TEXT": {
+              "type": "string",
+              "defaultValue": "console.log('ok')"
+            },
+            "LANGUAGE": {
+              "type": "string",
+              "defaultValue": "js"
+            }
+          }
+        },
+        {
+          "opcode": "listItem",
+          "blockType": "reporter",
+          "text": "list item [CONTENT]",
+          "arguments": {
+            "CONTENT": {
+              "type": "string",
+              "defaultValue": "item"
+            }
+          }
+        },
+        {
+          "opcode": "unorderedList",
+          "blockType": "reporter",
+          "text": "unordered list [ITEMS]",
+          "arguments": {
+            "ITEMS": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        },
+        {
+          "opcode": "orderedList",
+          "blockType": "reporter",
+          "text": "ordered list [ITEMS]",
+          "arguments": {
+            "ITEMS": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        },
+        {
+          "opcode": "concat",
+          "blockType": "reporter",
+          "text": "[LEFT] followed by [RIGHT]",
+          "arguments": {
+            "LEFT": {
+              "type": "string",
+              "defaultValue": ""
+            },
+            "RIGHT": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        },
+        {
+          "opcode": "render",
+          "blockType": "reporter",
+          "text": "render Markdown [FRAGMENT]",
+          "arguments": {
+            "FRAGMENT": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        },
+        {
+          "opcode": "renderWithValidation",
+          "blockType": "reporter",
+          "text": "render Markdown with validation [FRAGMENT]",
+          "arguments": {
+            "FRAGMENT": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        },
+        {
+          "opcode": "lastValidationErrors",
+          "blockType": "reporter",
+          "text": "last Markdown validation errors",
+          "arguments": {}
+        },
+        {
+          "opcode": "lastRenderHasValidationErrors",
+          "blockType": "Boolean",
+          "text": "last rendered Markdown has validation errors?",
+          "arguments": {}
+        },
+        {
+          "opcode": "validateMarkdown",
+          "blockType": "reporter",
+          "text": "validate Markdown [FRAGMENT]",
+          "arguments": {
+            "FRAGMENT": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        },
+        {
+          "opcode": "isValidMarkdown",
+          "blockType": "Boolean",
+          "text": "Markdown [FRAGMENT] is valid?",
+          "arguments": {
+            "FRAGMENT": {
+              "type": "string",
+              "defaultValue": ""
+            }
+          }
+        }
+      ]
+    }
+  }
+]
