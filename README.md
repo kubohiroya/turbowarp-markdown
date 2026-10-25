@@ -2,7 +2,7 @@
 
 <img src="assets/block-icon.svg" alt="" width="48" height="48">
 
-[日本語](README.ja.md)
+English | [日本語](README.ja.md)
 
 A TurboWarp extension for building Markdown as immutable structured fragments and rendering it only at the output boundary.
 
