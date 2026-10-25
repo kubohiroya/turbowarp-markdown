@@ -20,7 +20,7 @@
   	blockIconURI: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHJlY3QgeD0iNiIgeT0iOCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzJGNjM4NiIvPjxwYXRoIGQ9Ik0xMyAzMFYxOGw1IDcgNS03djEyTTI3LjUgMjB2MTBNMjcuNSAyMGgyLjVhNSA1IDAgMCAxIDAgMTBoLTIuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg=="
   };
   //#endregion
-  //#region node_modules/.pnpm/@kubohiroya+turbowarp-extension-data-editor@0.2.1_react@18.3.1/node_modules/@kubohiroya/turbowarp-extension-data-editor/dist/fixed-input-schema.js
+  //#region node_modules/.pnpm/@kubohiroya+turbowarp-extension-data-editor@0.3.3_react@18.3.1/node_modules/@kubohiroya/turbowarp-extension-data-editor/dist/fixed-input-schema.js
   var numberToken = /^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?$/u;
   var invalidNumber = Object.freeze({
   	kind: "invalid",
