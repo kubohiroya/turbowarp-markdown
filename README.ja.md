@@ -2,7 +2,7 @@
 
 <img src="assets/block-icon.svg" alt="" width="48" height="48">
 
-[English](README.md)
+[English](README.md) | 日本語
 
 TurboWarp 上で Markdown を immutable な構造化フラグメントとして組み立て、最後の出力境界でだけ Markdown 文字列へレンダリングする拡張です。
 
