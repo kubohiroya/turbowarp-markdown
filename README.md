@@ -17,7 +17,7 @@ A TurboWarp extension for building Markdown as immutable structured fragments an
 
 ## Requirements and safety
 
-- Node.js 22 or newer;
+- Node.js 24 or newer;
 - pnpm through Corepack;
 - TurboWarp's unsandboxed extension option is not required.
 
@@ -26,6 +26,7 @@ Plain text is escaped instead of treated as raw Markdown. The initial version in
 ## Installation
 
 ```bash
+npm install --global corepack@latest
 corepack enable
 pnpm install --frozen-lockfile
 ```
