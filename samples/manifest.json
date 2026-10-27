@@ -1,0 +1,21 @@
+{
+  "baseURL": "https://kubohiroya.github.io/turbowarp-markdown/",
+  "extension": {
+    "id": "kubohiroyamarkdown",
+    "bundle": "dist/turbowarp-markdown.js",
+    "unsandboxed": false
+  },
+  "samples": [
+    {
+      "name": "build-markdown-card",
+      "title": "Build a Markdown card",
+      "checks": [
+        {
+          "variable": "markdown",
+          "equals": "# Demo\n\n**Ready**"
+        }
+      ],
+      "instructions": "A heading and a bold Ready paragraph as Markdown text."
+    }
+  ]
+}
