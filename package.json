@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-markdown",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "An immutable Markdown builder extension for TurboWarp.",
   "author": "Hiroya Kubo <hiroya@cuc.ac.jp>",
   "license": "MPL-2.0",
@@ -60,19 +60,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
-    "@kubohiroya/turbowarp-extension-manifest": "^0.3.2",
-    "@kubohiroya/vite-plugin-turbowarp-extension": "^0.8.0",
+    "@kubohiroya/turbowarp-extension-manifest": "^0.4.0",
+    "@kubohiroya/vite-plugin-turbowarp-extension": "^0.9.0",
     "@types/node": "^24.13.3",
     "eslint": "^9.39.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.66.0",
     "vite": "^8.2.2",
     "vitest": "^4.1.10",
-    "@kubohiroya/turbowarp-extension-data-editor": "^0.3.4"
+    "@kubohiroya/turbowarp-extension-data-editor": "^0.4.0"
   },
-  "gitHead": "23c6fc48d20d69219b8ba6e5e2ab5c7e674623fc",
+  "gitHead": "a02baff13a8da2f82f8807d33fdc6c50e8505cb4",
   "x-turbowarp-source": {
-    "revision": "23c6fc48d20d69219b8ba6e5e2ab5c7e674623fc",
+    "revision": "a02baff13a8da2f82f8807d33fdc6c50e8505cb4",
     "revisionRole": "base-commit",
     "sourceState": "local-release-overlay"
   }
