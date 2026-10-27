@@ -6,6 +6,15 @@
 
 TurboWarp 上で Markdown を immutable な構造化フラグメントとして組み立て、最後の出力境界でだけ Markdown 文字列へレンダリングする拡張です。
 
+## 実行できるサンプル
+
+[**TurboWarp Editorでデモを開く**](https://turbowarp.org/editor?project_url=https%3A%2F%2Fkubohiroya.github.io%2Fturbowarp-markdown%2Fsamples%2Fbuild-markdown-card.sb3) · [SB3をダウンロード](https://kubohiroya.github.io/turbowarp-markdown/samples/build-markdown-card.sb3)
+
+**Allow**で読み込みを許可し、緑の旗を押します。
+`heading`・`bold`・`paragraph`・`render`で短い紹介文を生成し、結果のMarkdown文字列を表示。サンプルの元データと期待結果は[`samples/README.md`](samples/README.md)に記載しています。
+
+`pnpm run samples:build`でSB3を再生成し、`pnpm run samples:check`で更新漏れと生成処理を確認します。
+
 ## 概要
 
 - エスケープ済み text、bold、italic、link、inline code を作れます。

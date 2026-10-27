@@ -6,6 +6,16 @@ English | [日本語](README.ja.md)
 
 A TurboWarp extension for building Markdown as immutable structured fragments and rendering it only at the output boundary.
 
+## Runnable sample
+
+[**Open the demo in TurboWarp Editor**](https://turbowarp.org/editor?project_url=https%3A%2F%2Fkubohiroya.github.io%2Fturbowarp-markdown%2Fsamples%2Fbuild-markdown-card.sb3) · [Download the SB3](https://kubohiroya.github.io/turbowarp-markdown/samples/build-markdown-card.sb3)
+
+Choose **Allow** and click the green flag.
+A heading and a bold Ready paragraph as Markdown text.
+
+Editable sources and expected results: [`samples/README.md`](samples/README.md).
+Run `pnpm run samples:build` after source/bundle changes and `pnpm run samples:check` before committing.
+
 ## What it does
 
 - creates escaped inline text, bold, italic, links, and code spans;
