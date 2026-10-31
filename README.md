@@ -266,6 +266,16 @@ Use `render Markdown [FRAGMENT]` when validation is not needed. Use `render Mark
 
 Validation is intentionally lightweight. It catches common mistakes such as a `list item` used outside a list and block fragments nested inside inline-only fragments. It also warns about empty documents, empty lists, empty headings, and links without visible content or destinations.
 
+## Parse and read with Document Data
+
+The `turbowarp-markdown:v1:` values are a build format, not a tree meant for reading: list items and inline content can sit inside nested `sequence` fragments, and a fragment with one child has a different shape from one with several. To read or replace parts of a document you built, or to walk its structure, render it and pass the string to [TurboWarp Document Data](https://github.com/kubohiroya/turbowarp-document-data):
+
+```text
+parse Markdown (render Markdown (fragment)) as document [doc]
+```
+
+Document Data keeps the parsed Markdown as an mdast tree whose children are always flat `children` arrays, and its blocks read and replace text by location. The two extensions share no package dependency and exchange only the rendered string, so this extension keeps running in the sandbox; Document Data itself runs without the sandbox.
+
 ## Development
 
 ```bash
