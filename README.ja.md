@@ -28,6 +28,16 @@ TurboWarp 上で Markdown を immutable な構造化フラグメントとして�
 
 `turbowarp-http-server` とは npm パッケージ依存では結合しません。Markdown 拡張で作ったフラグメントを `render Markdown` で文字列化し、HTTP レスポンス本文として渡してください。content type は `text/markdown; charset=utf-8` を明示する想定です。
 
+## Document Dataで解析・読み取りする
+
+`turbowarp-markdown:v1:`の値は組み立て用の形式で、読み取るための木ではありません。箇条書きの項目やinlineの中身が入れ子の`sequence`に入ることがあり、中身が1つのときと複数のときで形も変わります。組み立てた文書の一部を読み取ったり置き換えたり、構造を順にたどったりするときは、`render Markdown`で文字列にして[TurboWarp Document Data](https://github.com/kubohiroya/turbowarp-document-data)へ渡してください。
+
+```text
+parse Markdown (render Markdown (fragment)) as document [doc]
+```
+
+Document Dataは解析したMarkdownをmdastの木として保持し、子は常に平らな`children`配列に並びます。位置を指定してtextを読み取り・置き換えるblockがあります。2つの拡張はnpmパッケージ依存を持たず、描画した文字列だけを受け渡すため、この拡張はサンドボックス内のまま動作します。Document Data自体はサンドボックスなしで動作します。
+
 ## 開発
 
 ```bash
