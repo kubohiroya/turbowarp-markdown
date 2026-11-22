@@ -44,7 +44,7 @@ pnpm install --frozen-lockfile
 The package is version-pinned when used from npm:
 
 ```bash
-pnpm add --save-exact @kubohiroya/turbowarp-markdown@0.7.1
+pnpm add --save-exact @kubohiroya/turbowarp-markdown@0.8.0
 ```
 
 ## Quick Start
