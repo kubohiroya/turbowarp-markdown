@@ -75,7 +75,7 @@
     "typescript-eslint": "^8.66.0",
     "vite": "^8.2.2",
     "vitest": "^4.1.10",
-    "@kubohiroya/turbowarp-extension-data-editor": "^0.11.4"
+    "@kubohiroya/turbowarp-extension-data-editor": "^0.11.5"
   },
   "gitHead": "a02baff13a8da2f82f8807d33fdc6c50e8505cb4",
   "x-turbowarp-source": {
